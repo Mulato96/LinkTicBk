@@ -35,9 +35,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	@Override
 	public JwtAuthenticationResponse signup(SignUpRequest request) {
-		var user = Cliente.builder().firstName(request.getFirstName()).lastName(request.getLastName())
-				.email(request.getEmail()).password(passwordEncoder.encode(request.getPassword())).role(Role.USER)
-				.build();
+		var user = Cliente.builder().nombre(request.getNombre()).apellido(request.getApellido())
+				.telefono(request.getTelefono()).email(request.getEmail())
+				.password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
 		userRepository.save(user);
 		var jwt = jwtService.generateToken(user);
 		return JwtAuthenticationResponse.builder().token(jwt).build();

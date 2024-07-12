@@ -13,6 +13,7 @@ import com.linktic.reservas.repository.IClienteRepository;
 import com.linktic.reservas.repository.IReservaRepository;
 import com.linktic.reservas.repository.IServicioRepository;
 import com.linktic.reservas.service.IReservaService;
+import com.linktic.reservas.utilities.ResourceNotFoundException;
 
 @Service
 public class ReservaServiceImpl implements IReservaService {
