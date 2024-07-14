@@ -3,13 +3,14 @@ package com.linktic.reservas.service;
 import java.util.Date;
 import java.util.List;
 
+import com.linktic.reservas.dto.ReservaDTO;
 import com.linktic.reservas.entities.Reserva;
 
 public interface IReservaService {
 
-	Reserva crearReserva(Long clienteId, Long servicioId, Reserva reservaDetalles);
+	Reserva crearReserva(ReservaDTO reservaDTO);
 
-	Reserva modificarReserva(Long id, Long clienteId, Long servicioId, Reserva reservaDetalles);
+	Reserva modificarReserva(Long id, ReservaDTO reservaDTO);
 
 	void eliminarReserva(Long id);
 

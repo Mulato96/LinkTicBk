@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.linktic.reservas.dto.ReservaDTO;
 import com.linktic.reservas.entities.Cliente;
 import com.linktic.reservas.entities.Reserva;
 import com.linktic.reservas.entities.Servicio;
@@ -25,31 +26,36 @@ public class ReservaServiceImpl implements IReservaService {
 	@Autowired
 	private IServicioRepository servicioRepository;
 
-	public Reserva crearReserva(Long clienteId, Long servicioId, Reserva reservaDetalles) {
-		Cliente cliente = clienteRepository.findById(clienteId)
-				.orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
-		Servicio servicio = servicioRepository.findById(servicioId)
-				.orElseThrow(() -> new ResourceNotFoundException("Servicio no encontrado"));
+	public Reserva crearReserva(ReservaDTO reservaDTO) {
+		Reserva reserva = new Reserva();
+		Cliente cliente = new Cliente();
 
-		reservaDetalles.setCliente(cliente);
-		reservaDetalles.setServicio(servicio);
-
-		return reservaRepository.save(reservaDetalles);
-	}
-
-	public Reserva modificarReserva(Long id, Long clienteId, Long servicioId, Reserva reservaDetalles) {
-		Reserva reserva = reservaRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
-
-		Cliente cliente = clienteRepository.findById(clienteId)
-				.orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
-		Servicio servicio = servicioRepository.findById(servicioId)
-				.orElseThrow(() -> new ResourceNotFoundException("Servicio no encontrado"));
+		if (reservaDTO.isClientnew()) {
+			cliente.setNombre(reservaDTO.getCliente().getNombre());
+			cliente.setApellido(reservaDTO.getCliente().getApellido());
+			cliente.setTelefono(reservaDTO.getCliente().getTelefono());
+			cliente.setEmail(reservaDTO.getCliente().getEmail());
+			cliente = clienteRepository.save(cliente);
+		} else {
+			cliente = reservaDTO.getCliente();
+		}
 
 		reserva.setCliente(cliente);
-		reserva.setServicio(servicio);
-		reserva.setFecha(reservaDetalles.getFecha());
-		reserva.setDetalles(reservaDetalles.getDetalles());
+		reserva.setServicio(reservaDTO.getServicio());
+		reserva.setFecha(reservaDTO.getFecha());
+		reserva.setDetalles(reservaDTO.getDetalles());
+
+		return reservaRepository.save(reserva);
+	}
+
+	public Reserva modificarReserva(Long id, ReservaDTO reservaDTO) {
+		Reserva reserva = reservaRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada"));
+		
+		reserva.setCliente(reservaDTO.getCliente());
+		reserva.setServicio(reservaDTO.getServicio());
+		reserva.setFecha(reservaDTO.getFecha());
+		reserva.setDetalles(reservaDTO.getDetalles());
 
 		return reservaRepository.save(reserva);
 	}

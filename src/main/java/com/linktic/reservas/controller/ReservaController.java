@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.linktic.reservas.entities.Reserva;
+
+import com.linktic.reservas.dto.ReservaDTO;
 import com.linktic.reservas.service.IReservaService;
 import com.linktic.reservas.utilities.ResponseService;
 import com.linktic.reservas.utilities.Status;
@@ -29,11 +29,10 @@ public class ReservaController {
 	private HttpStatus statusHttp;
 
 	@PostMapping
-	public ResponseEntity<ResponseService> crearReserva(@RequestParam Long clienteId, @RequestParam Long servicioId,
-			@RequestBody Reserva reserva) {
+	public ResponseEntity<ResponseService> crearReserva(@RequestBody ReservaDTO reservaDTO) {
 		ResponseService response = new ResponseService();
 		try {
-			response.setData(reservaService.crearReserva(clienteId, servicioId, reserva));
+			response.setData(reservaService.crearReserva(reservaDTO));
 			response.setStatus(Status.OK);
 			statusHttp = HttpStatus.OK;
 		} catch (Exception e) {
@@ -45,12 +44,11 @@ public class ReservaController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseService> modificarReserva(@PathVariable Long id, @RequestParam Long clienteId,
-			@RequestParam Long servicioId, @RequestBody Reserva reservaDetalles) {
+	public ResponseEntity<ResponseService> modificarReserva(@PathVariable Long id, ReservaDTO reservaDTO) {
 		ResponseService response = new ResponseService();
 
 		try {
-			response.setData(reservaService.modificarReserva(id, clienteId, servicioId, reservaDetalles));
+			response.setData(reservaService.modificarReserva(id, reservaDTO));
 			response.setStatus(Status.OK);
 			statusHttp = HttpStatus.OK;
 		} catch (Exception e) {
