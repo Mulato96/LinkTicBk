@@ -10,7 +10,7 @@ import com.linktic.reservas.dao.request.SignUpRequest;
 import com.linktic.reservas.dao.request.SigninRequest;
 import com.linktic.reservas.dao.response.JwtAuthenticationResponse;
 import com.linktic.reservas.entities.Role;
-import com.linktic.reservas.entities.Cliente;
+import com.linktic.reservas.entities.Usuario;
 import com.linktic.reservas.repository.IUserRepository;
 import com.linktic.reservas.service.IAuthenticationService;
 import com.linktic.reservas.service.IJwtService;
@@ -35,8 +35,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
 
 	@Override
 	public JwtAuthenticationResponse signup(SignUpRequest request) {
-		var user = Cliente.builder().nombre(request.getNombre()).apellido(request.getApellido())
-				.telefono(request.getTelefono()).email(request.getEmail())
+		var user = Usuario.builder().nombre(request.getNombre()).email(request.getEmail())
 				.password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
 		userRepository.save(user);
 		var jwt = jwtService.generateToken(user);
