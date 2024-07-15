@@ -19,7 +19,6 @@ Este proyecto es un sistema de gestión de reservas para servicios como restaura
 - Hibernate
 - Postgres
 - Maven
-- Docker
 - Swagger para documentación API (URL http://localhost:3000/swagger-ui/index.html)
 - Git para control de versiones
 
